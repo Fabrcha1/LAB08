@@ -50,4 +50,39 @@ class TaskViewModel(private val dao: TaskDao) : ViewModel() {
             _tasks.value = emptyList() // Vaciamos la lista en el estado
         }
     }
+
+    fun editTask(task: Task, newDescription: String) {
+        viewModelScope.launch {
+            val updatedTask = task.copy(description = newDescription)
+            dao.updateTask(updatedTask)
+            _tasks.value = dao.getAllTasks() // Recargamos la lista de tareas
+        }
+    }
+
+    // Función para eliminar una tarea individual
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            dao.deleteTask(task)
+            _tasks.value = dao.getAllTasks() // Recargamos la lista
+        }
+    }
+
+    // Función para buscar tareas por descripción
+    fun searchTasks(query: String) {
+        viewModelScope.launch {
+            _tasks.value = dao.searchTasks("%$query%")
+        }
+    }
+
+    fun getCompletedTasks() {
+        TODO("Not yet implemented")
+    }
+
+    fun getPendingTasks() {
+        TODO("Not yet implemented")
+    }
+
+    fun getAllTasks() {
+        TODO("Not yet implemented")
+    }
 }
